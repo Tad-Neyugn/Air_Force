@@ -1,0 +1,17 @@
+# Chan rac cua Visual Studio
+.vs/
+Debug/
+Release/
+x64/
+x86/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+
+# Chan rac cua Code::Blocks
+bin/
+obj/
+*.cbp
+*.depend
+*.layout
