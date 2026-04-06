@@ -6,7 +6,7 @@
 struct Enemy {
     float x, y;
     float speed;
-git
+
     int health;
     bool isAlive;
 
@@ -24,5 +24,3 @@ void renderEnemy(SDL_Renderer* renderer, Enemy* e);
 
 #endif
 
-
-#endif // ENEMY_H_INCLUDED

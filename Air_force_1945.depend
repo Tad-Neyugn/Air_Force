@@ -1,0 +1,34 @@
+# depslib dependency file v1.0
+1775115102 source:e:\air_force\air_force_1945\game.cpp
+	"Game.h"
+
+1775467451 e:\air_force\air_force_1945\game.h
+	<SDL2/SDL.h>
+	<iostream>
+	"Player.h"
+	"Enemy.h"
+
+1775118737 e:\air_force\air_force_1945\player.h
+	<SDL2/SDL.h>
+	<vector>
+	"Bullet.h"
+
+1775118687 e:\air_force\air_force_1945\bullet.h
+	<SDL2/SDL.h>
+
+1775465036 source:e:\air_force\air_force_1945\main.cpp
+	"Game.h"
+
+1775119149 source:e:\air_force\air_force_1945\player.cpp
+	"Player.h"
+
+1775118688 source:e:\air_force\air_force_1945\bullet.cpp
+	"Bullet.h"
+
+1775466238 source:e:\air_force\air_force_1945\enemy.cpp
+	"Enemy.h"
+	<cmath>
+
+1775466794 e:\air_force\air_force_1945\enemy.h
+	<SDL2/SDL.h>
+
