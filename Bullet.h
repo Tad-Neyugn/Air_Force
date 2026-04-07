@@ -13,6 +13,8 @@ public:
     bool isActive() { return active; }
     SDL_Rect getRect() { return {x, y, width, height}; }
 
+    void destroy() { active = false; }
+
 private:
     int x, y;
     int width = 4;

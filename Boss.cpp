@@ -111,7 +111,5 @@ void takeDamage(Boss* b, float damage, bossBulletNode** bulletList) {
         b->active = false;
         //Co the them effect gi do
     }
-
-    if(bulletList != nullptr && *bulletList != nullptr) clearBossBullets(bulletList);
 }
 

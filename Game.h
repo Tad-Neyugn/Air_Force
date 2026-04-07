@@ -48,6 +48,8 @@ private:
 
     SDL_Texture* backgroundTex1;
     SDL_Texture* backgroundTex2;
+
+    void handleCollisions(); // Hàm chuyên xử lý va chạm
 };
 
 #endif

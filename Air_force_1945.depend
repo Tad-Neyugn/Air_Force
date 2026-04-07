@@ -1,19 +1,29 @@
 # depslib dependency file v1.0
-1775115102 source:e:\air_force\air_force_1945\game.cpp
+1775590185 source:e:\air_force\air_force_1945\game.cpp
 	"Game.h"
+	"BasicData.h"
+	"HerdControl.h"
+	"Collision.h"
+	<SDL2/SDL.h>
+	<cstdlib>
+	<ctime>
 
-1775467451 e:\air_force\air_force_1945\game.h
+1775589485 e:\air_force\air_force_1945\game.h
 	<SDL2/SDL.h>
 	<iostream>
+	<cstdint>
 	"Player.h"
 	"Enemy.h"
+	"HerdControl.h"
+	"Boss.h"
+	"BossBullet.h"
 
-1775118737 e:\air_force\air_force_1945\player.h
+1775587077 e:\air_force\air_force_1945\player.h
 	<SDL2/SDL.h>
 	<vector>
 	"Bullet.h"
 
-1775118687 e:\air_force\air_force_1945\bullet.h
+1775583420 e:\air_force\air_force_1945\bullet.h
 	<SDL2/SDL.h>
 
 1775465036 source:e:\air_force\air_force_1945\main.cpp
@@ -25,11 +35,15 @@
 1775118688 source:e:\air_force\air_force_1945\bullet.cpp
 	"Bullet.h"
 
-1775466238 source:e:\air_force\air_force_1945\enemy.cpp
+1775582222 source:e:\air_force\air_force_1945\enemy.cpp
 	"Enemy.h"
 	<cmath>
+	<iostream>
+	"Player.h"
 
-1775466794 e:\air_force\air_force_1945\enemy.h
+1775582222 e:\air_force\air_force_1945\enemy.h
+	"BasicData.h"
+	"Player.h"
 	<SDL2/SDL.h>
 
 1775498158 source:c:\chickeninvaders\module1\enemy.cpp
@@ -125,4 +139,42 @@
 1775553479 c:\users\maste\downloads\air_force-main\air_force-main\bossbullet.h
 	<SDL2/SDL.h>
 	"BasicData.h"
+
+1775582222 e:\air_force\air_force_1945\basicdata.h
+
+1775582222 e:\air_force\air_force_1945\herdcontrol.h
+	"Enemy.h"
+	<SDL2/SDL.h>
+	"BasicData.h"
+
+1775582222 e:\air_force\air_force_1945\boss.h
+	<SDL2/SDL.h>
+	<cstdint>
+	<cstdlib>
+	"BasicData.h"
+	"BossBullet.h"
+
+1775582222 e:\air_force\air_force_1945\bossbullet.h
+	<SDL2/SDL.h>
+	"BasicData.h"
+
+1775589485 source:e:\air_force\air_force_1945\boss.cpp
+	"Boss.h"
+	"BossBullet.h"
+	<cmath>
+
+1775582222 source:e:\air_force\air_force_1945\bossbullet.cpp
+	"BossBullet.h"
+
+1775582222 source:e:\air_force\air_force_1945\herdcontrol.cpp
+	"HerdControl.h"
+	"Player.h"
+
+1775589804 source:e:\air_force\air_force_1945\collision.cpp
+	"Collision.h"
+
+1775589522 e:\air_force\air_force_1945\collision.h
+	<SDL2/SDL.h>
+	"HerdControl.h"
+	"Boss.h"
 

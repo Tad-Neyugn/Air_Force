@@ -37,6 +37,8 @@
 		<Unit filename="BossBullet.cpp" />
 		<Unit filename="BossBullet.h" />
 		<Unit filename="Bullet.h" />
+		<Unit filename="Collision.cpp" />
+		<Unit filename="Collision.h" />
 		<Unit filename="Enemy.cpp" />
 		<Unit filename="Enemy.h" />
 		<Unit filename="Game.cpp" />
