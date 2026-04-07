@@ -9,6 +9,9 @@ class Player {
 public:
     Player(int startX, int startY);
     ~Player();
+    float getY() { return y; }
+    void reduceHealth() { health--; }
+    int getHealth() { return health; }
 
     void handleInput(); // Bắt phím di chuyển
     void update();      // Cập nhật vị trí
@@ -19,6 +22,8 @@ private:
     int width, height;  // Kích thước máy bay
     int speed;          // Tốc độ bay
     int dx, dy;         // Hướng di chuyển (Delta X, Delta Y)
+    int health = 10;
+    bool active = true;
 
     std::vector<Bullet*> bullets; // Túi chứa vô số viên đạn
     Uint32 lastShotTime = 0; // Lưu lại thời điểm bắn viên đạn gần nhất

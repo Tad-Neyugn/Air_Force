@@ -32,3 +32,97 @@
 1775466794 e:\air_force\air_force_1945\enemy.h
 	<SDL2/SDL.h>
 
+1775498158 source:c:\chickeninvaders\module1\enemy.cpp
+	"Enemy.h"
+	<cmath>
+
+1775498158 c:\chickeninvaders\module1\enemy.h
+	"../BasicData.h"
+	<SDL2/SDL.h>
+
+1775478497 c:\chickeninvaders\basicdata.h
+
+1775497231 source:c:\users\maste\downloads\air_force-main\air_force-main\bullet.cpp
+	"Bullet.h"
+
+1775497231 c:\users\maste\downloads\air_force-main\air_force-main\bullet.h
+	<SDL2/SDL.h>
+
+1775497231 source:c:\users\maste\downloads\air_force-main\air_force-main\main.cpp
+	"Game.h"
+
+1775571026 c:\users\maste\downloads\air_force-main\air_force-main\game.h
+	<SDL2/SDL.h>
+	<iostream>
+	<cstdint>
+	"Player.h"
+	"Enemy.h"
+	"HerdControl.h"
+	"Boss.h"
+	"BossBullet.h"
+
+1775575674 c:\users\maste\downloads\air_force-main\air_force-main\player.h
+	<SDL2/SDL.h>
+	<vector>
+	"Bullet.h"
+
+1775576810 c:\users\maste\downloads\air_force-main\air_force-main\enemy.h
+	"BasicData.h"
+	"Player.h"
+	<SDL2/SDL.h>
+
+1775497231 source:c:\users\maste\downloads\air_force-main\air_force-main\player.cpp
+	"Player.h"
+
+1775498182 source:c:\chickeninvaders\module2\herdcontrol.cpp
+	"HerdControl.h"
+
+1775497372 c:\chickeninvaders\module2\herdcontrol.h
+	"../Module1/Enemy.h"
+	<SDL2/SDL.h>
+	"../BasicData.h"
+
+1775577543 source:c:\users\maste\downloads\air_force-main\air_force-main\enemy.cpp
+	"Enemy.h"
+	<cmath>
+	<iostream>
+	"Player.h"
+
+1775547560 c:\users\maste\downloads\air_force-main\air_force-main\basicdata.h
+
+1775578688 source:c:\users\maste\downloads\air_force-main\air_force-main\game.cpp
+	"Game.h"
+	"BasicData.h"
+	"HerdControl.h"
+	<SDL2/SDL.h>
+	<cstdlib>
+	<ctime>
+
+1775577013 c:\users\maste\downloads\air_force-main\air_force-main\herdcontrol.h
+	"Enemy.h"
+	<SDL2/SDL.h>
+	"BasicData.h"
+
+1775576538 source:c:\users\maste\downloads\air_force-main\air_force-main\herdcontrol.cpp
+	"HerdControl.h"
+	"Player.h"
+
+1775578176 source:c:\users\maste\downloads\air_force-main\air_force-main\boss.cpp
+	"Boss.h"
+	"BossBullet.h"
+	<cmath>
+
+1775578082 c:\users\maste\downloads\air_force-main\air_force-main\boss.h
+	<SDL2/SDL.h>
+	<cstdint>
+	<cstdlib>
+	"BasicData.h"
+	"BossBullet.h"
+
+1775557157 source:c:\users\maste\downloads\air_force-main\air_force-main\bossbullet.cpp
+	"BossBullet.h"
+
+1775553479 c:\users\maste\downloads\air_force-main\air_force-main\bossbullet.h
+	<SDL2/SDL.h>
+	"BasicData.h"
+
