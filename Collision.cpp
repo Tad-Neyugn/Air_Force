@@ -1,5 +1,7 @@
 #include "Collision.h"
+#include <SDL2/SDL_mixer.h>
 
+extern Mix_Chunk* explodeSound;
 // Hàm 1: Quét va chạm cơ bản
 bool Collision::check(const SDL_Rect& a, const SDL_Rect& b) {
     if (a.x + a.w <= b.x || a.x >= b.x + b.w) return false;
@@ -26,7 +28,7 @@ bool Collision::checkBulletHitHerd(EnemyNode** head, const SDL_Rect& bulletRect)
 
             delete current->data; // Dọn dẹp RAM con gà
             delete current;       // Dọn dẹp Node
-
+            Mix_PlayChannel(-1, explodeSound, 0);
             return true; // Báo cáo trúng mục tiêu
         }
 

@@ -9,29 +9,35 @@ class Player {
 public:
     Player(int startX, int startY);
     ~Player();
-    float getY() { return y; }
+
+    void handleInput();
+    void update();
+    void render(SDL_Renderer* renderer);
+
+    // Các hàm bổ trợ để Game.cpp sử dụng
+    float getX() { return (float)x; }
+    float getY() { return (float)y; }
     void reduceHealth() { health--; }
     int getHealth() { return health; }
 
-    void handleInput(); // Bắt phím di chuyển
-    void update();      // Cập nhật vị trí
-    void render(SDL_Renderer* renderer); // Vẽ máy bay ra màn hình
-    std::vector<Bullet*> bullets; // Túi chứa vô số viên đạn
     SDL_Rect getRect() {
-    return { (int)x, (int)y, width, height };
-}
+        return { x, y, width, height };
+    }
+
+    std::vector<Bullet*> bullets;
+
+    void setX(float xValue) { x = xValue; }
+    void setY(float yValue) { y = yValue; }
 
 private:
-    int x, y;           // Tọa độ hiện tại
-    int width, height;  // Kích thước máy bay
-    int speed;          // Tốc độ bay
-    int dx, dy;         // Hướng di chuyển (Delta X, Delta Y)
+    int x, y;
+    int width, height;
+    int speed;
+    int dx, dy;
     int health = 10;
-    bool active = true;
 
-
-    Uint32 lastShotTime = 0; // Lưu lại thời điểm bắn viên đạn gần nhất
-    Uint32 fireRate = 100;   // Khoảng cách bắt buộc giữa 2 viên đạn (200 mili-giây = 0.2 giây)
+    Uint32 lastShotTime = 0;
+    Uint32 fireRate = 150;   // Khoảng cách giữa 2 lần bắn (150ms là vừa đẹp)
 };
 
 #endif

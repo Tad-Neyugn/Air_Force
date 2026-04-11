@@ -1,14 +1,28 @@
 #ifndef GAME_H
 #define GAME_H
 
-#include <SDL2/SDL.h>     // Lưu ý: Để <SDL.h> cho khỏi bị lỗi đường dẫn như lúc đầu nhé
+#include <SDL2/SDL.h>
+#include <SDL2/SDL_image.h>
+#include <SDL2/SDL_mixer.h>
 #include <iostream>
-#include <cstdint>
+#include <vector>
 #include "Player.h"
-#include "Enemy.h"   // <--- THÊM DÒNG NÀY: Khai báo thư viện Quái
+#include "Enemy.h"
 #include "HerdControl.h"
 #include "Boss.h"
 #include "BossBullet.h"
+
+// --- THÊM MỚI: Các trạng thái của Game ---
+enum GameState {
+    STATE_MENU,
+    STATE_PLAYING,
+    STATE_WARNING,
+    STATE_GAMEOVER,
+    STATE_WIN
+};
+
+extern Mix_Chunk* shootSound;
+extern Mix_Chunk* explodeSound;
 
 class Game {
 public:
@@ -29,27 +43,39 @@ private:
     SDL_Renderer* renderer;
 
     Player* player;
-    Enemy* testEnemy;
     EnemyNode* chickenHerd;
-
-    uint32_t gameStartTime;
-    bool bossSpawned;
     Boss* myBoss;
     bossBulletNode* bossBullets;
 
+    SDL_Texture* playerTex;
+    SDL_Texture* enemyTex;
     SDL_Texture* bossTex;
     SDL_Texture* bossBulletTex;
+    SDL_Texture* bulletTex;
+    SDL_Texture* backgroundTex;
 
-    const uint32_t BOSS_TRIGGER_TIME = 120000;
+    // --- THÊM MỚI: Textures cho Menu và Thông báo ---
+    SDL_Texture* playBtnTex;
+    SDL_Texture* exitBtnTex;
+    SDL_Texture* warningTex;
+    SDL_Texture* gameOverTex;
+    SDL_Texture* winTex;
 
-    float bgY1;
-    float bgY2;
+    uint32_t gameStartTime;
+    bool bossSpawned = false;
+
+    float bgY1, bgY2;
     float scrollSpeed;
 
-    SDL_Texture* backgroundTex1;
-    SDL_Texture* backgroundTex2;
+    // --- THÊM MỚI: Biến quản lý trạng thái và logic mới ---
+    GameState currentState;   // Trạng thái hiện tại
+    int playerLives;          // Số mạng (3)
+    uint32_t warningStartTime; // Thời gian bắt đầu hiện chữ "Boss xuất hiện"
 
-    void handleCollisions(); // Hàm chuyên xử lý va chạm
+    SDL_Rect btnPlayRect;     // Khung nút Play
+    SDL_Rect btnExitRect;     // Khung nút Exit
+
+    void handleCollisions();
 };
 
 #endif

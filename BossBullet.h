@@ -20,5 +20,5 @@ void addBossBullet(bossBulletNode** head, float x, float y, float sX, float sY, 
 void updateBossBullet(bossBulletNode** head);
 void renderBossBullet(SDL_Renderer* renderer, bossBulletNode* head);
 void clearBossBullets(bossBulletNode** head);
-
+void renderBossBullet(SDL_Renderer* renderer, bossBulletNode* head, SDL_Texture* tex);
 #endif // BOSSBULLET_H_INCLUDED

@@ -75,3 +75,12 @@ void clearBossBullets(bossBulletNode** head) {
     }
     *head = nullptr;
 }
+
+void renderBossBullet(SDL_Renderer* renderer, bossBulletNode* head, SDL_Texture* tex) {
+    bossBulletNode* curr = head;
+    while (curr != nullptr) {
+        SDL_Rect bRect = { (int)curr->data->x, (int)curr->data->y, 10, 20 };
+        SDL_RenderCopy(renderer, tex, NULL, &bRect);
+        curr = curr->next;
+    }
+}

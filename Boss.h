@@ -1,8 +1,8 @@
 #ifndef BOSS_H_INCLUDED
 #define BOSS_H_INCLUDED
+
 #include <SDL2/SDL.h>
 #include <cstdint>
-#include <cstdlib>
 #include "BasicData.h"
 #include "BossBullet.h"
 
@@ -11,8 +11,8 @@ struct Boss {
     int width;
     int height;
 
-    int health;
-    int maxHealth;
+    float health;    // Đổi thành float để tính toán sát thương chính xác
+    float maxHealth;
     bool active;
 
     float Yspeed;
@@ -25,11 +25,13 @@ struct Boss {
     SDL_Texture* texture;
 };
 
+// Khai báo các hàm xử lý Boss
 Boss* createBoss(SDL_Texture* tex);
 void updateBoss(Boss *b, float playerY, bossBulletNode** bulletList, SDL_Texture* bulletTex);
 void renderBoss(SDL_Renderer* renderer, Boss* b);
 void renderBossHP(SDL_Renderer* renderer, Boss* b);
-void takeDamage(Boss* b, float damage);
+
+// CHỈ GIỮ LẠI MỘT HÀM takeDamage NÀY
 void takeDamage(Boss* b, float damage, bossBulletNode** bulletList);
 
 #endif

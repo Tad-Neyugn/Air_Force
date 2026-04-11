@@ -43,26 +43,26 @@ Enemy* createEnemy(float x, float y, int type, int width, int height, SDL_Textur
 void updateEnemy(Enemy* e, Player* p) {
     if (!e->active) return;
 
+    // Di chuyển theo trục Y
     e->y += e->Yspeed;
 
+    // Logic di chuyển theo từng loại (Type)
     if (e->type == 1) {
         e->x = e->originX + e->amplitude * sin(SDL_GetTicks() * e->frequency);
     }
-
     else if (e->type == 0) {
         e->x += e->Xspeed;
     }
-
     else if (e->type == 2) {
-    float time = SDL_GetTicks() * e->frequency;
-    e->x = e->originX + cos(time) * e->amplitude;
-    e->y += sin(time) * 0.5f;
+        float time = SDL_GetTicks() * e->frequency;
+        e->x = e->originX + cos(time) * e->amplitude;
+        e->y += sin(time) * 0.5f;
     }
-
     else if (e->type == 3) {
-    e->Yspeed += 0.03f;
+        e->Yspeed += 0.03f;
     }
 
+    // Xử lý va chạm với biên trái/phải màn hình
     if (e->x < 0) {
         e->x = 0;
         e->Xspeed = -e->Xspeed;
@@ -70,16 +70,6 @@ void updateEnemy(Enemy* e, Player* p) {
     else if (e->x + e->width > screenW) {
         e->x = screenW - e->width;
         e->Xspeed = -e->Xspeed;
-    }
-
-    if (e->y > screenH) {
-        e->active = false;
-        if(p != nullptr) p->reduceHealth();
-    }
-
-    if (p->getHealth() <= 0) {
-        std::cout << "GAME OVER! Ban da de lot qua nhieu ke thu!" << std::endl;
-        return;
     }
 }
 
@@ -98,3 +88,5 @@ void renderEnemy(SDL_Renderer* renderer, Enemy* e) {
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     }
 }
+
+

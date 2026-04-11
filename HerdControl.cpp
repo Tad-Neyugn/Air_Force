@@ -52,3 +52,17 @@ void clearHerd(EnemyNode** head) {
     *head = nullptr;
 }
 
+void renderHerd(EnemyNode* head, SDL_Renderer* renderer, SDL_Texture* tex) {
+    EnemyNode* curr = head;
+    while(curr != nullptr) {
+        // Tạo Rect dựa trên tọa độ của con gà
+        SDL_Rect dest = { (int)curr->data->x, (int)curr->data->y, curr->data->width, curr->data->height };
+        if (tex) {
+            SDL_RenderCopy(renderer, tex, NULL, &dest);
+        } else {
+            renderEnemy(renderer, curr->data); // Vẽ khối màu nếu không có ảnh
+        }
+        curr = curr->next;
+    }
+}
+
