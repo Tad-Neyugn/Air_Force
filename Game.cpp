@@ -14,6 +14,7 @@ Game::Game() {
     playerLives = 3;
     btnPlayRect = { 300, 250, 200, 80 };
     btnExitRect = { 300, 350, 200, 80 };
+    bossSpawned = false; // Đảm bảo khởi tạo cờ boss
 }
 
 void Game::init(const char* title, int width, int height) {
@@ -58,6 +59,7 @@ void Game::handleEvents() {
                     my >= btnPlayRect.y && my <= btnPlayRect.y + btnPlayRect.h) {
                     playerLives = 3;
                     bossSpawned = false;
+                    myBoss = nullptr; // Reset boss khi chơi lại
                     clearHerd(&chickenHerd);
                     currentState = STATE_PLAYING;
                     gameStartTime = SDL_GetTicks();
@@ -79,56 +81,109 @@ void Game::update() {
     if (bgY2 >= 600) bgY2 = bgY1 - 600;
 
     switch (currentState) {
-        case STATE_PLAYING: { // Thêm ngoặc nhọn ở đây để fix lỗi "jump to case label"
+        case STATE_PLAYING: {
             player->update();
-            uint32_t elapsedTime = SDL_GetTicks() - gameStartTime;
-            if (elapsedTime < 20000) {
-                static int spawnTimer = 0;
-                if (++spawnTimer >= 60) {
-                    float randomX = (rand() % 700) + 50;
-                    addEnemy(&chickenHerd, randomX, -50, rand() % 4, enemyTex);
-                    spawnTimer = 0;
+
+            // Nếu chưa đến lúc xuất hiện Boss
+            if (!bossSpawned) {
+                uint32_t elapsedTime = SDL_GetTicks() - gameStartTime;
+                if (elapsedTime < 20000) {
+                    static int spawnTimer = 0;
+                    if (++spawnTimer >= 60) {
+                        float randomX = (rand() % 700) + 50;
+                        addEnemy(&chickenHerd, randomX, -50, rand() % 4, enemyTex);
+                        spawnTimer = 0;
+                    }
+                    updateHerd(&chickenHerd, player);
                 }
-                updateHerd(&chickenHerd, player);
+                else {
+                    currentState = STATE_WARNING;
+                    warningStartTime = SDL_GetTicks();
+                    clearHerd(&chickenHerd);
+                }
             }
-            else {
-                currentState = STATE_WARNING;
-                warningStartTime = SDL_GetTicks();
-                clearHerd(&chickenHerd);
+            // Nếu Boss đã được tạo và đang active
+            else if (myBoss && myBoss->active) {
+                updateBoss(myBoss, player->getY(), &bossBullets, bossBulletTex);
+                updateBossBullet(&bossBullets);
+
+                // KHI BOSS CHẾT
+                if (myBoss->health <= 0) {
+                    currentState = STATE_WIN;
+                    bossSpawned = false; // KHÓA: Ngăn lệnh vẽ Boss ngay lập tức
+
+                    // Dọn dẹp sạch sẽ màn hình
+                    clearHerd(&chickenHerd);
+                    // Xóa đạn Boss còn sót lại
+                    while(bossBullets) {
+                        bossBulletNode* temp = bossBullets;
+                        bossBullets = bossBullets->next;
+                        delete temp->data;
+                        delete temp;
+                    }
+                    return; // Dừng mọi logic update ngay lập tức để hiện ảnh thắng
+                }
             }
+
             handleCollisions();
         } break;
 
-        case STATE_WARNING:
+        case STATE_WARNING: {
             player->update();
             if (SDL_GetTicks() - warningStartTime > 3000) {
-                myBoss = createBoss(bossTex);
+                if (myBoss == nullptr) {
+                    myBoss = createBoss(bossTex);
+                }
                 bossSpawned = true;
                 currentState = STATE_PLAYING;
             }
-            break;
+        } break;
 
-        default: break; // Thêm default để hết warning
-    }
-
-    if (bossSpawned && myBoss && myBoss->active && currentState == STATE_PLAYING) {
-        updateBoss(myBoss, player->getY(), &bossBullets, bossBulletTex);
-        updateBossBullet(&bossBullets);
-        if (myBoss->health <= 0) currentState = STATE_WIN;
+        default: break;
     }
 }
 
 void Game::render() {
     SDL_RenderClear(renderer);
+
+    // 1. Vẽ nền (Background) luôn luôn vẽ đầu tiên
     SDL_Rect rect1 = { 0, (int)bgY1, 800, 600 };
     SDL_Rect rect2 = { 0, (int)bgY2, 800, 600 };
     SDL_RenderCopy(renderer, backgroundTex, NULL, &rect1);
     SDL_RenderCopy(renderer, backgroundTex, NULL, &rect2);
 
     if (currentState == STATE_MENU) {
+        // Màn hình chính
         SDL_RenderCopy(renderer, playBtnTex, NULL, &btnPlayRect);
         SDL_RenderCopy(renderer, exitBtnTex, NULL, &btnExitRect);
-    } else {
+    }
+    else if (currentState == STATE_WIN) {
+        // Ưu tiên vẽ ảnh Thắng tràn màn hình
+        SDL_Rect fullScreen = { 0, 0, 800, 600 };
+        SDL_RenderCopy(renderer, winTex, NULL, &fullScreen);
+        SDL_RenderCopy(renderer, playBtnTex, NULL, &btnPlayRect);
+        SDL_RenderCopy(renderer, exitBtnTex, NULL, &btnExitRect);
+    }
+    else if (currentState == STATE_GAMEOVER) {
+        // Ưu tiên vẽ ảnh Thua tràn màn hình
+        SDL_Rect fullScreen = { 0, 0, 800, 600 };
+        SDL_RenderCopy(renderer, gameOverTex, NULL, &fullScreen);
+        SDL_RenderCopy(renderer, playBtnTex, NULL, &btnPlayRect);
+        SDL_RenderCopy(renderer, exitBtnTex, NULL, &btnExitRect);
+    }
+    else {
+        // ĐANG CHƠI (CHỈ vẽ khi không ở trạng thái kết thúc)
+
+        // 2. Vẽ Boss
+        if (bossSpawned && myBoss && myBoss->active) {
+            renderBoss(renderer, myBoss);
+            renderBossBullet(renderer, bossBullets, bossBulletTex);
+        }
+
+        // 3. Vẽ Gà (Chicken Herd)
+        if (chickenHerd) renderHerd(chickenHerd, renderer, enemyTex);
+
+        // 4. Vẽ Player và Đạn Player
         if (player) {
             for (auto b : player->bullets) {
                 SDL_Rect bRect = b->getRect();
@@ -137,41 +192,32 @@ void Game::render() {
             SDL_Rect pRect = player->getRect();
             SDL_RenderCopy(renderer, playerTex, NULL, &pRect);
         }
-        if (chickenHerd) renderHerd(chickenHerd, renderer, enemyTex);
-        if (bossSpawned && myBoss) {
-            renderBoss(renderer, myBoss);
-            renderBossBullet(renderer, bossBullets, bossBulletTex);
+
+        // 5. Vẽ UI Mạng (Chỉ vẽ khi đang chơi hoặc cảnh báo)
+        if (currentState == STATE_PLAYING || currentState == STATE_WARNING) {
+            for (int i = 0; i < playerLives; i++) {
+                SDL_Rect lifeRect = { 10 + i * 35, 10, 30, 30 };
+                SDL_RenderCopy(renderer, playerTex, NULL, &lifeRect);
+            }
         }
-        for (int i = 0; i < playerLives; i++) {
-            SDL_Rect lifeRect = { 10 + i * 35, 10, 30, 30 };
-            SDL_RenderCopy(renderer, playerTex, NULL, &lifeRect);
-        }
+
+        // 6. Hiệu ứng Cảnh báo Boss
         if (currentState == STATE_WARNING) {
             SDL_Rect wRect = { 200, 250, 400, 100 };
             SDL_RenderCopy(renderer, warningTex, NULL, &wRect);
         }
-        if (currentState == STATE_GAMEOVER) {
-            SDL_Rect goRect = { 200, 150, 400, 200 };
-            SDL_RenderCopy(renderer, gameOverTex, NULL, &goRect);
-            SDL_RenderCopy(renderer, playBtnTex, NULL, &btnPlayRect);
-        }
-        if (currentState == STATE_WIN) {
-            SDL_Rect winR = { 200, 150, 400, 200 };
-            SDL_RenderCopy(renderer, winTex, NULL, &winR);
-            SDL_RenderCopy(renderer, playBtnTex, NULL, &btnPlayRect);
-        }
     }
+
     SDL_RenderPresent(renderer);
 }
 
 void Game::handleCollisions() {
     if (!player || currentState != STATE_PLAYING) return;
 
-    // 1. Cấu hình Hitbox của Player (Chỉnh lại độ nhạy để không quá khó chạm)
     SDL_Rect pRect = player->getRect();
     SDL_Rect pHitbox = { pRect.x + 20, pRect.y + 20, pRect.w - 40, pRect.h - 40 };
 
-    // 2. Xử lý đạn của Player bắn trúng kẻ địch
+    // Player Bullets hit Enemy/Boss
     for (int i = 0; i < (int)player->bullets.size(); i++) {
         Bullet* b = player->bullets[i];
         if (!b->isActive()) continue;
@@ -179,7 +225,7 @@ void Game::handleCollisions() {
         bool hit = false;
 
         if (bossSpawned && myBoss && myBoss->active) {
-            SDL_Rect bossHitbox = { (int)myBoss->x + 50, (int)myBoss->y + 20, myBoss->width - 60, myBoss->height - 100 };
+            SDL_Rect bossHitbox = { (int)myBoss->x + 50, (int)myBoss->y + 20, myBoss->width - 100, myBoss->height - 100 };
             if (Collision::check(bRect, bossHitbox)) {
                 takeDamage(myBoss, 10, &bossBullets);
                 hit = true;
@@ -191,25 +237,21 @@ void Game::handleCollisions() {
         if (hit) b->destroy();
     }
 
-    // 3. Kiểm tra va chạm gây mất mạng
+    // Player Hit Enemy/Boss/BossBullets
     bool lostLife = false;
 
     if (bossSpawned && myBoss && myBoss->active) {
-        // Va chạm với thân Boss hoặc đạn Boss
-        SDL_Rect bBody = { (int)myBoss->x + 20, (int)myBoss->y + 30, myBoss->width - 40, myBoss->height - 60 };
+        SDL_Rect bBody = { (int)myBoss->x + 40, (int)myBoss->y + 40, myBoss->width - 80, myBoss->height - 80 };
         if (Collision::check(pHitbox, bBody)) lostLife = true;
         if (Collision::checkPlayerHitBossBullets(bossBullets, pHitbox)) lostLife = true;
     }
     else if (chickenHerd) {
-        // Va chạm trực tiếp với gà
         if (Collision::checkPlayerHitHerd(chickenHerd, pHitbox)) {
             lostLife = true;
         }
         else {
-            // KIỂM TRA GÀ RƠI XUỐNG ĐÁY MÀN HÌNH (600px)
             EnemyNode* temp = chickenHerd;
             while(temp) {
-                // Chỉ cần 1 con vượt quá tọa độ y = 580 (gần chạm đáy) là tính mất mạng
                 if(temp->data && temp->data->y > 580) {
                     lostLife = true;
                     break;
@@ -219,23 +261,16 @@ void Game::handleCollisions() {
         }
     }
 
-    // 4. Thực thi việc mất mạng và hồi sinh
     if (lostLife) {
         playerLives--;
         Mix_PlayChannel(-1, explodeSound, 0);
-
         if (playerLives <= 0) {
             currentState = STATE_GAMEOVER;
         }
         else {
-            // Xóa sạch đàn gà cũ để không bị trừ mạng liên tục bởi con gà vừa rơi xuống
             clearHerd(&chickenHerd);
-
-            // Đưa người chơi về vị trí an toàn (giữa màn hình phía dưới)
             player->setX(375);
             player->setY(500);
-
-            // Có thể thêm hiệu ứng tạm thời không va chạm ở đây nếu muốn
         }
     }
 }
