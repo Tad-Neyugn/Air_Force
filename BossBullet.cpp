@@ -47,16 +47,21 @@ void updateBossBullet(bossBulletNode** head) {
         }
     }
 }
-
-void renderBossBullet(SDL_Renderer* renderer, bossBulletNode* head) {
+// BossBullet.cpp
+void renderBossBullet(SDL_Renderer* renderer, bossBulletNode* head, SDL_Texture* tex) {
     bossBulletNode* curr = head;
     while (curr != nullptr) {
         bossBullet* bullet = curr->data;
-        if (bullet->active) {
+        if (bullet != nullptr && bullet->active) {
+            // Sử dụng kích thước từ struct bullet
             SDL_Rect rect = { (int)bullet->x, (int)bullet->y, bullet->width, bullet->height };
-            if (bullet->texture != nullptr) {
+
+            if (tex != nullptr) {
+                SDL_RenderCopy(renderer, tex, NULL, &rect);
+            } else if (bullet->texture != nullptr) {
                 SDL_RenderCopy(renderer, bullet->texture, NULL, &rect);
             } else {
+                // Fallback nếu không có ảnh
                 SDL_SetRenderDrawColor(renderer, 255, 0, 255, 255);
                 SDL_RenderFillRect(renderer, &rect);
             }
@@ -76,11 +81,3 @@ void clearBossBullets(bossBulletNode** head) {
     *head = nullptr;
 }
 
-void renderBossBullet(SDL_Renderer* renderer, bossBulletNode* head, SDL_Texture* tex) {
-    bossBulletNode* curr = head;
-    while (curr != nullptr) {
-        SDL_Rect bRect = { (int)curr->data->x, (int)curr->data->y, 10, 20 };
-        SDL_RenderCopy(renderer, tex, NULL, &bRect);
-        curr = curr->next;
-    }
-}

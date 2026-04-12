@@ -3,15 +3,16 @@
 
 #include <SDL2/SDL.h>
 #include <cstdint>
+#include <vector>        // Thêm thư viện vector
 #include "BasicData.h"
-#include "BossBullet.h"
+#include "Bullet.h"      // Dùng Bullet.h thay vì BossBullet.h
 
 struct Boss {
     float x, y;
     int width;
     int height;
 
-    float health;    // Đổi thành float để tính toán sát thương chính xác
+    float health;
     float maxHealth;
     bool active;
 
@@ -25,13 +26,11 @@ struct Boss {
     SDL_Texture* texture;
 };
 
-// Khai báo các hàm xử lý Boss
+// Khai báo lại các hàm sử dụng std::vector thay vì bossBulletNode
 Boss* createBoss(SDL_Texture* tex);
-void updateBoss(Boss *b, float playerY, bossBulletNode** bulletList, SDL_Texture* bulletTex);
+void updateBoss(Boss *b, float playerY, std::vector<Bullet*>& bulletList); // Chỗ này quan trọng nè
 void renderBoss(SDL_Renderer* renderer, Boss* b);
 void renderBossHP(SDL_Renderer* renderer, Boss* b);
-
-// CHỈ GIỮ LẠI MỘT HÀM takeDamage NÀY
-void takeDamage(Boss* b, float damage, bossBulletNode** bulletList);
+void takeDamage(Boss* b, float damage); // Bỏ cái bulletList thừa đi
 
 #endif

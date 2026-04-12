@@ -11,8 +11,7 @@ struct EnemyNode {
 
 void addEnemy(EnemyNode** head, float x, float y, int type, SDL_Texture* tex);
 void updateHerd(EnemyNode** head, Player* p);
-void renderHerd(EnemyNode* head, SDL_Renderer* renderer);
 void clearHerd(EnemyNode** head);
-// Thêm SDL_Texture* tex vào cuối
+
 void renderHerd(EnemyNode* head, SDL_Renderer* renderer, SDL_Texture* tex);
 #endif

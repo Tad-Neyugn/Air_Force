@@ -1,41 +1,43 @@
 # depslib dependency file v1.0
-1775590185 source:e:\air_force\air_force_1945\game.cpp
+1775960433 source:e:\air_force\air_force_1945\game.cpp
 	"Game.h"
-	"BasicData.h"
-	"HerdControl.h"
 	"Collision.h"
-	<SDL2/SDL.h>
-	<cstdlib>
+	"BasicData.h"
 	<ctime>
+	<algorithm>
 
-1775589485 e:\air_force\air_force_1945\game.h
+1775960057 e:\air_force\air_force_1945\game.h
 	<SDL2/SDL.h>
+	<SDL2/SDL_image.h>
+	<SDL2/SDL_mixer.h>
 	<iostream>
-	<cstdint>
+	<vector>
 	"Player.h"
 	"Enemy.h"
 	"HerdControl.h"
 	"Boss.h"
 	"BossBullet.h"
 
-1775587077 e:\air_force\air_force_1945\player.h
+1775944971 e:\air_force\air_force_1945\player.h
 	<SDL2/SDL.h>
 	<vector>
 	"Bullet.h"
 
-1775583420 e:\air_force\air_force_1945\bullet.h
+1775925155 e:\air_force\air_force_1945\bullet.h
 	<SDL2/SDL.h>
 
-1775465036 source:e:\air_force\air_force_1945\main.cpp
+1775945599 source:e:\air_force\air_force_1945\main.cpp
 	"Game.h"
 
-1775119149 source:e:\air_force\air_force_1945\player.cpp
+1775953373 source:e:\air_force\air_force_1945\player.cpp
 	"Player.h"
+	<SDL2/SDL_mixer.h>
 
-1775118688 source:e:\air_force\air_force_1945\bullet.cpp
+1775959695 source:e:\air_force\air_force_1945\bullet.cpp
 	"Bullet.h"
+	"BasicData.h"
 
-1775582222 source:e:\air_force\air_force_1945\enemy.cpp
+1775925155 source:e:\air_force\air_force_1945\enemy.cpp
 	"Enemy.h"
 	<cmath>
 	<iostream>
@@ -140,43 +142,49 @@
 	<SDL2/SDL.h>
 	"BasicData.h"
 
-1775582222 e:\air_force\air_force_1945\basicdata.h
+1775959695 e:\air_force\air_force_1945\basicdata.h
 
-1775582222 e:\air_force\air_force_1945\herdcontrol.h
+1775946184 e:\air_force\air_force_1945\herdcontrol.h
 	"Enemy.h"
 	<SDL2/SDL.h>
 	"BasicData.h"
 
-1775582222 e:\air_force\air_force_1945\boss.h
+1775960057 e:\air_force\air_force_1945\boss.h
 	<SDL2/SDL.h>
 	<cstdint>
-	<cstdlib>
+	<vector>
 	"BasicData.h"
-	"BossBullet.h"
+	"Bullet.h"
 
-1775582222 e:\air_force\air_force_1945\bossbullet.h
+1775925155 e:\air_force\air_force_1945\bossbullet.h
 	<SDL2/SDL.h>
 	"BasicData.h"
 
-1775589485 source:e:\air_force\air_force_1945\boss.cpp
+1775960057 source:e:\air_force\air_force_1945\boss.cpp
 	"Boss.h"
-	"BossBullet.h"
+	"BasicData.h"
 	<cmath>
+	<vector>
+	"Bullet.h"
 
-1775582222 source:e:\air_force\air_force_1945\bossbullet.cpp
+1775958865 source:e:\air_force\air_force_1945\bossbullet.cpp
 	"BossBullet.h"
 
-1775582222 source:e:\air_force\air_force_1945\herdcontrol.cpp
+1775958611 source:e:\air_force\air_force_1945\herdcontrol.cpp
 	"HerdControl.h"
 	"Player.h"
 
-1775589804 source:e:\air_force\air_force_1945\collision.cpp
+1775960320 source:e:\air_force\air_force_1945\collision.cpp
 	"Collision.h"
+	<SDL2/SDL_mixer.h>
+	<vector>
 
-1775589522 e:\air_force\air_force_1945\collision.h
+1775960320 e:\air_force\air_force_1945\collision.h
 	<SDL2/SDL.h>
+	<vector>
 	"HerdControl.h"
 	"Boss.h"
+	"Bullet.h"
 
 1775896659 source:c:\users\hp\documents\github\air_force\boss.cpp
 	"Boss.h"
@@ -219,7 +227,7 @@
 	<vector>
 	"Bullet.h"
 
-1775935130 source:c:\users\hp\documents\github\air_force\game.cpp
+1775921536 source:c:\users\hp\documents\github\air_force\game.cpp
 	"Game.h"
 	"Collision.h"
 	<ctime>

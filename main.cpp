@@ -8,7 +8,7 @@ int main(int argc, char* argv[]) {
 
     game = new Game();
 
-    game->init("Air Force", 800, 600);
+    game->init("Air Force", screenW, screenH);
 
 
     while (game->running()) {

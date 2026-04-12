@@ -29,6 +29,10 @@ public:
     void setX(float xValue) { x = xValue; }
     void setY(float yValue) { y = yValue; }
 
+    bool isInvincible;
+    Uint32 invincibleStartTime;
+    void makeInvincible(); // Hàm kích hoạt bất tử
+
 private:
     int x, y;
     int width, height;

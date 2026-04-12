@@ -1,22 +1,22 @@
 #include "Bullet.h"
+#include "BasicData.h"
 
 Bullet::Bullet(int startX, int startY, int spdX, int spdY) {
-    x = startX;
-    y = startY;
-    speedX = spdX;
-    speedY = spdY;
+    x = startX; y = startY;
+    speedX = spdX; speedY = spdY;
     active = true;
+    width = 15;  height = 30; // Chỉnh lại cho cân đối
 }
 
 void Bullet::update() {
-    x += speedX; // Đạn bay ngang
-    y += speedY; // Đạn bay dọc
-
-    // Nếu đạn bay ra khỏi 4 cạnh màn hình (giả sử màn hình rộng 800, cao 600) thì xóa
-    if (y < 0 || y > 600 || x < 0 || x > 800) {
+    x += speedX;
+    y += speedY;
+    // Dùng hằng số thay vì 600, 800
+    if (y < -50 || y > screenH + 50 || x < -50 || x > screenW + 50) {
         active = false;
     }
 }
+
 
 void Bullet::render(SDL_Renderer* renderer) {
     SDL_Rect rect = {x, y, width, height};

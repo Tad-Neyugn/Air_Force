@@ -34,6 +34,8 @@ public:
     void update();
     void render();
     void clean();
+    void updateBossBullets();
+    void renderBossBullets();
 
     bool running() { return isRunning; }
 
@@ -45,7 +47,9 @@ private:
     Player* player;
     EnemyNode* chickenHerd;
     Boss* myBoss;
-    bossBulletNode* bossBullets;
+    // Thay thế: bossBulletNode* bossBullets;
+    // Thành:
+    std::vector<Bullet*> bossBullets;
 
     SDL_Texture* playerTex;
     SDL_Texture* enemyTex;
@@ -53,6 +57,7 @@ private:
     SDL_Texture* bossBulletTex;
     SDL_Texture* bulletTex;
     SDL_Texture* backgroundTex;
+    SDL_Texture* backgroundTex2;
 
     // --- THÊM MỚI: Textures cho Menu và Thông báo ---
     SDL_Texture* playBtnTex;
@@ -71,6 +76,7 @@ private:
     GameState currentState;   // Trạng thái hiện tại
     int playerLives;          // Số mạng (3)
     uint32_t warningStartTime; // Thời gian bắt đầu hiện chữ "Boss xuất hiện"
+    uint32_t stateStartTime; // Biến dùng chung để đếm thời gian chuyển cảnh
 
     SDL_Rect btnPlayRect;     // Khung nút Play
     SDL_Rect btnExitRect;     // Khung nút Exit
