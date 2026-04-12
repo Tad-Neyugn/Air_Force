@@ -88,11 +88,14 @@ void Game::update() {
     if (bgY1 >= screenH) bgY1 = bgY2 - screenH;
     if (bgY2 >= screenH) bgY2 = bgY1 - screenH;
 
+    uint32_t elapsedTime = SDL_GetTicks() - gameStartTime;
+
     switch (currentState) {
         case STATE_PLAYING: {
             player->update();
+
             if (!bossSpawned) {
-                uint32_t elapsedTime = SDL_GetTicks() - gameStartTime;
+                // 1. SINH GÀ: Chỉ sinh khi chưa tới 20 giây
                 if (elapsedTime < 20000) {
                     static int spawnTimer = 0;
                     if (++spawnTimer >= 60) {
@@ -101,19 +104,45 @@ void Game::update() {
                         spawnTimer = 0;
                     }
                 }
+
+                // 2. CẬP NHẬT GÀ: Luôn cập nhật để gà di chuyển và bị bắn
                 updateHerd(&chickenHerd, player);
 
+                // 3. CHECK GÀ XỔNG: Vẫn giữ logic trừ mạng khi gà bay mất
+                EnemyNode* temp = chickenHerd;
+                while (temp != nullptr) {
+                    if (temp->data->active && temp->data->y > screenH) {
+                        temp->data->active = false;
+                        if (!player->isInvincible) {
+                            playerLives--;
+                            Mix_PlayChannel(-1, explodeSound, 0);
+                            if (playerLives <= 0) {
+                                currentState = STATE_GAMEOVER;
+                                stateStartTime = SDL_GetTicks();
+                                return;
+                            } else {
+                                player->makeInvincible();
+                            }
+                        }
+                    }
+                    temp = temp->next;
+                }
+
+                // 4. ĐIỀU KIỆN RA BOSS (ĐÚNG Ý BRO):
+                // Phải THỎA MÃN CẢ HAI: Hết 20 giây VÀ Không còn con gà nào trên màn hình
                 if (elapsedTime >= 20000 && chickenHerd == nullptr) {
                     static uint32_t waitTime = 0;
                     if (waitTime == 0) waitTime = SDL_GetTicks();
+
                     if (SDL_GetTicks() - waitTime > 1000) {
                         currentState = STATE_WARNING;
                         warningStartTime = SDL_GetTicks();
                         waitTime = 0;
                     }
                 }
-            } else if (myBoss && myBoss->active) {
-                // Sửa tham số: Chỉ truyền bossBullets (vector), không truyền texture
+            }
+            // 5. Logic Boss
+            else if (myBoss && myBoss->active) {
                 updateBoss(myBoss, player->getY(), bossBullets);
                 updateBossBullets();
 
@@ -151,7 +180,6 @@ void Game::update() {
             break;
     }
 }
-
 void Game::updateBossBullets() {
     auto it = bossBullets.begin();
     while (it != bossBullets.end()) {
