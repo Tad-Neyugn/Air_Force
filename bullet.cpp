@@ -11,7 +11,7 @@ Bullet::Bullet(int startX, int startY, int spdX, int spdY) {
 void Bullet::update() {
     x += speedX;
     y += speedY;
-    // Dùng hằng số thay vì 600, 800
+
     if (y < -50 || y > screenH + 50 || x < -50 || x > screenW + 50) {
         active = false;
     }

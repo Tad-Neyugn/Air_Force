@@ -1,6 +1,6 @@
 #include "Player.h"
 #include <SDL2/SDL_mixer.h>
-
+#include "BasicData.h"
 extern Mix_Chunk* shootSound;
 
 Player::Player(int startX, int startY) {
@@ -25,7 +25,7 @@ void Player::handleInput() {
     if (state[SDL_SCANCODE_RIGHT]) dx = speed;
 
     if (state[SDL_SCANCODE_SPACE]) {
-        Uint32 currentTime = SDL_GetTicks();
+        uint32_t currentTime = SDL_GetTicks();
         if (currentTime - lastShotTime > fireRate) {
             bullets.push_back(new Bullet(x + width/2 - 5, y, 0, -8));
             if (shootSound) Mix_PlayChannel(-1, shootSound, 0);
@@ -37,9 +37,9 @@ void Player::handleInput() {
 void Player::update() {
     x += dx; y += dy;
     if (x < 0) x = 0;
-    if (x > 800 - width) x = 800 - width;
+    if (x > screenW - width) x = screenW - width;
     if (y < 0) y = 0;
-    if (y > 600 - height) y = 600 - height;
+    if (y > screenH - height) y = screenH - height;
 
     auto it = bullets.begin();
     while (it != bullets.end()) {

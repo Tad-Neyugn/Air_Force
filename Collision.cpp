@@ -20,15 +20,24 @@ bool Collision::checkBulletHitHerd(EnemyNode** head, const SDL_Rect& bulletRect)
         SDL_Rect enemyRect = { (int)current->data->x, (int)current->data->y, current->data->width, current->data->height };
 
         if (Collision::check(bulletRect, enemyRect)) {
-            if (prev == nullptr) {
-                *head = current->next;
-            } else {
-                prev->next = current->next;
+            // 1. TRỪ MÁU QUÁI TRƯỚC
+            current->data->health -= 1;
+
+            // 2. KIỂM TRA XEM ĐÃ CHẾT CHƯA
+            if (current->data->health <= 0) {
+                // Nếu hết máu mới thực hiện xóa node
+                if (prev == nullptr) {
+                    *head = current->next;
+                } else {
+                    prev->next = current->next;
+                }
+
+                delete current->data;
+                delete current;
+                Mix_PlayChannel(-1, explodeSound, 0);
             }
 
-            delete current->data;
-            delete current;
-            Mix_PlayChannel(-1, explodeSound, 0);
+            // Trả về true để viên đạn của người chơi bị hủy (biến mất) sau khi chạm
             return true;
         }
 

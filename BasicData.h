@@ -12,8 +12,8 @@ const int bossH = 160;
 const float bossMaxHP = 2000.0f;
 const float bossBaseSpeed = 0.8f;
 
-// Thêm kích thước đạn vào đây cho đồng bộ
 const int bulletW = 20;
 const int bulletH = 40;
+
 
 #endif

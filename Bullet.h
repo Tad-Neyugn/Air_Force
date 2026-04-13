@@ -17,8 +17,8 @@ public:
 
 private:
     int x, y;
-    int width = 10;
-    int height = 20;
+    int width;
+    int height;
     int speedX; // Vận tốc ngang (X)
     int speedY; // Vận tốc dọc (Y)
     bool active;

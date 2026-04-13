@@ -13,8 +13,9 @@ Game::Game() {
     myBoss = nullptr;
     currentState = STATE_MENU;
     playerLives = 3;
-    btnPlayRect = { 300, 250, 200, 80 };
-    btnExitRect = { 300, 350, 200, 80 };
+    int centerX = (screenW - 200) / 2;
+    btnPlayRect = { centerX, (int)(screenH * 0.4f), 200, 80 };
+    btnExitRect = { centerX, (int)(screenH * 0.4f) + 100, 200, 80 };
     bossSpawned = false;
     stateStartTime = 0;
 }
@@ -23,7 +24,7 @@ void Game::init(const char* title, int width, int height) {
     if (SDL_Init(SDL_INIT_EVERYTHING) == 0) {
         IMG_Init(IMG_INIT_PNG);
         Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-        window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, 0);
+        window = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, screenW, screenH, 0);
         renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
         isRunning = true;
 
@@ -42,7 +43,8 @@ void Game::init(const char* title, int width, int height) {
 
         shootSound = Mix_LoadWAV("assets/shoot.wav");
         explodeSound = Mix_LoadWAV("assets/explode.wav");
-        player = new Player(375, 500);
+
+        player = new Player(screenW/2, screenH);
         gameStartTime = SDL_GetTicks();
         bgY1 = 0; bgY2 = -screenH;
         scrollSpeed = 0.8f;
@@ -100,7 +102,7 @@ void Game::update() {
                     static int spawnTimer = 0;
                     if (++spawnTimer >= 60) {
                         float randomX = (rand() % (screenW - 100)) + 50;
-                        addEnemy(&chickenHerd, randomX, -50, rand() % 4, enemyTex);
+                        addEnemy(&chickenHerd, randomX, -50, rand()%4, enemyTex);
                         spawnTimer = 0;
                     }
                 }
@@ -242,7 +244,7 @@ void Game::handleCollisions() {
     if (!player || currentState != STATE_PLAYING) return;
 
     SDL_Rect pHitbox = player->getRect();
-    pHitbox.x += 15; pHitbox.y += 15; pHitbox.w -= 30; pHitbox.h -= 30;
+    pHitbox.x += 35; pHitbox.y += 35; pHitbox.w -= 70; pHitbox.h -= 70;
 
     // 1. Đạn người chơi bắn Boss/Gà
     for (auto b : player->bullets) {
@@ -273,7 +275,7 @@ void Game::handleCollisions() {
 
         if (hit) {
             playerLives--;
-            Mix_PlayChannel(-1, explodeSound, 0);
+            Mix_PlayChannel(-1, explodeSound, 0);  // Tat tieng o day
             if (playerLives <= 0) {
                 currentState = STATE_GAMEOVER;
                 stateStartTime = SDL_GetTicks();
